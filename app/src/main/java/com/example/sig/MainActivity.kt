@@ -20,18 +20,16 @@ class MainActivity : AppCompatActivity() {
 
         tv = findViewById(R.id.tv)
 
-        val retrofit =RetrofitSingleton.getRetrofitInstance()
-
-        retrofit.create<ParcService>().getParc()
-            .enqueue(object : Callback<result>{
+        RetrofitSingleton.getRetrofitInstance().create<ParcService>().getParc()
+                .enqueue(object : Callback<result>{
                 override fun onResponse(call: Call<result?>, response: Response<result?>) {
                     parc = response.body()
                     tv.text = "J'ai reçu quelque chose"
                 }
                 override fun onFailure(call: Call<result>, t: Throwable?) {
-                    tv.text = "J'ai rien"
+                    tv.text = "J'ai rien \n ${t.toString()}"
                 }
-            })
+        })
 
 
     }

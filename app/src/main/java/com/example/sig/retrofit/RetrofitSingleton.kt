@@ -11,7 +11,7 @@ object RetrofitSingleton {
 
         if(RETROFIT_INSTANCE == null){
             RETROFIT_INSTANCE = Retrofit.Builder()
-                .baseUrl("http://www.makhno.fr/")
+                .baseUrl("https://www.makhno.fr/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
