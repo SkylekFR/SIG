@@ -8,6 +8,9 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener
+import org.osmdroid.views.overlay.ItemizedOverlayWithFocus
+import org.osmdroid.views.overlay.OverlayItem
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,8 +34,49 @@ class MainActivity : AppCompatActivity() {
         val startPoint = GeoPoint(45.750000, 4.850000)
         mapController.setCenter(startPoint)
 
+        /**
+         * Gets the current location through location permission
+         * TODO: Find a way to declare the current location among the "points de passage"
+         */
+//        this.mLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), mMapView)
+//        this.mLocationOverlay.enableMyLocation()
+//        mMapView.getOverlays().add(this.mLocationOverlay)
+
+
+        /**
+         * Enables icons placing with clicklisteners
+         * TODO: Get the coordinates of the "points de passage"
+         */
+//        //your items
+//        var items: ArrayList<OverlayItem?>? = ArrayList<OverlayItem>()!!
+//        items!!.add(
+//            OverlayItem(
+//                "Title",
+//                "Description",
+//                GeoPoint(0.0, 0.0)
+//            )
+//        ) // Lat/Lon decimal degrees
+//
+//        //the overlay
+//        val mOverlay = ItemizedOverlayWithFocus(
+//            items,
+//            object : OnItemGestureListener<OverlayItem?> {
+//                override fun onItemSingleTapUp(index: Int, item: OverlayItem?): Boolean {
+//                    //do something
+//                    return true
+//                }
+//
+//                override fun onItemLongPress(index: Int, item: OverlayItem?): Boolean {
+//                    return false
+//                }
+//            }, context
+//        )
+//        mOverlay.setFocusItemsOnTap(true)
+//
+//        mMapView.getOverlays().add(mOverlay)
 
     }
+
 
     public override fun onResume() {
         super.onResume()
