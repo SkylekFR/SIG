@@ -1,17 +1,11 @@
 package com.example.sig
 
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 
@@ -27,8 +21,15 @@ class MainActivity : AppCompatActivity() {
         map = findViewById<View>(R.id.map) as MapView
         map!!.setTileSource(TileSourceFactory.MAPNIK)
 
-//        map!!.zoomController.setVisibility(CustomZoomButtonsController.Visibility.ALWAYS);
-//        map!!.setMultiTouchControls(true);
+        //zoom on the map
+        map!!.zoomController.setVisibility(CustomZoomButtonsController.Visibility.ALWAYS);
+        map!!.setMultiTouchControls(true);
+
+        //default view point
+        val mapController = map!!.controller
+        mapController.setZoom(9.5)
+        val startPoint = GeoPoint(45.750000, 4.850000)
+        mapController.setCenter(startPoint)
 
 
     }
