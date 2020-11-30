@@ -5,7 +5,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         map = findViewById<View>(R.id.map) as MapView
         map!!.setTileSource(TileSourceFactory.MAPNIK)
+
+
     }
 
     public override fun onResume() {
