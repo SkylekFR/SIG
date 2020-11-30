@@ -31,6 +31,17 @@ class MainActivity : AppCompatActivity() {
                 }
         })
 
+        RetrofitSingleton.getRetrofitInstance().create<ParcService>().getOneRoute(numRoute = 10,numMobile = 250)
+                .enqueue(object : Callback<String>{
+                    override fun onResponse(call: Call<String?>, response: Response<String?>) {
+                        tv.text = response.body()
+                    }
+
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                        tv.text = "J'ai rien pour la route 10 \n ${t.toString()}"
+                    }
+                })
+
 
     }
 }
