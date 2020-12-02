@@ -1,7 +1,11 @@
 package com.example.sig
 
+import DemoCollectionAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import android.widget.TextView
 import androidx.lifecycle.*
 import com.example.sig.models.EtatRoute
@@ -22,6 +26,9 @@ class MainActivity : AppCompatActivity() {
     private var mViewModel = MainViewModel()
 
 
+    private lateinit var demoCollectionAdapter: DemoCollectionAdapter
+    private lateinit var viewPager: ViewPager2
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,5 +43,13 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+        //demoCollectionAdapter = DemoCollectionAdapter(supportFragmentManager.findFragmentById())
+        viewPager = findViewById(R.id.activity_main_viewPager)
+        //viewPager.adapter = demoCollectionAdapter
+        /*val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = "OBJECT ${(position + 1)}"
+        }.attach()*/
     }
 }
