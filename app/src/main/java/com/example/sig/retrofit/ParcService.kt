@@ -9,10 +9,10 @@ import retrofit2.http.Query
 interface ParcService {
 
     @GET("parcview")
-    fun getParc(): Call<result>
+    suspend fun getParc(): result
 
     @GET("parcroute")
-    fun getOneRoute(@Query("route") numRoute: Int, @Query("mobile")numMobile: Int) : Call<EtatRoute>
+    suspend fun getOneRoute(@Query("route") numRoute: Int, @Query("mobile")numMobile: Int) : EtatRoute
 
 
 }
