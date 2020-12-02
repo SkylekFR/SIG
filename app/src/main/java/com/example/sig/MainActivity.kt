@@ -7,6 +7,7 @@ import androidx.lifecycle.*
 import com.example.sig.models.EtatRoute
 import com.example.sig.models.PARC
 import com.example.sig.models.result
+import com.example.sig.retrofit.ParcRepository
 import com.example.sig.retrofit.ParcService
 import com.example.sig.retrofit.RetrofitSingleton
 import retrofit2.*
@@ -18,20 +19,7 @@ class MainActivity : AppCompatActivity() {
     private var parc: PARC? = null
     private var retourRoute: EtatRoute? = null
 
-/*    private fun initAndGetParc() {
-        RetrofitSingleton.getRetrofitInstance().create<ParcService>().getParc()
-                .enqueue(object : Callback<result>{
-                 override fun onResponse(call: Call<result?>, response: Response<result?>) {
-                    resultParcComplet = response.body()
-                    parc = resultParcComplet!!.PARC[0] // je choppe les parcpoint comme cela (je recup le parc qui contient juste les PARCPONT)
-                    parc?.PARC_ROUTE  = resultParcComplet!!.PARC[1].PARC_ROUTE // puis ensuite je lui ajoute les parcroute avec le membre du parc qui cotient juste les PARCROUTE
-                    tv.text = "J'ai reçu quelque chose"
-                }
-                override fun onFailure(call: Call<result>, t: Throwable?) {
-                    tv.text = "J'ai rien \n ${t.toString()}"
-                }
-                })
-    }*/
+    private var mViewModel = MainViewModel()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,34 +27,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         tv = findViewById(R.id.tv)
+        mViewModel.parcList.observe(this, Observer {
+            tv.text = it[0].PARC_POINT[0].POI_ID
+        })
+        mViewModel.getEtatRoute(1, 103).observe(this, Observer {
+            tv.text = tv.text.toString() + "     " +  it[0].delai
+        })
 
-        //initAndGetParc()
 
-        RetrofitSingleton.getRetrofitInstance().create<ParcService>().getParc()
-            .enqueue(object : Callback<result>{
-                override fun onResponse(call: Call<result?>, response: Response<result?>) {
-                    resultParcComplet = response.body()
-                    parc = resultParcComplet!!.PARC[0] // je choppe les parcpoint comme cela (je recup le parc qui contient juste les PARCPONT)
-                    parc?.PARC_ROUTE  = resultParcComplet!!.PARC[1].PARC_ROUTE // puis ensuite je lui ajoute les parcroute avec le membre du parc qui cotient juste les PARCROUTE
-                    tv.text = "J'ai reçu quelque chose"
-                }
-                override fun onFailure(call: Call<result>, t: Throwable?) {
-                    tv.text = "J'ai rien \n ${t.toString()}"
-                }
-            })
-
-        RetrofitSingleton.getRetrofitInstance().create<ParcService>().getOneRoute(numRoute = 1,numMobile = 250)
-            .enqueue(object : Callback<EtatRoute>{
-                override fun onResponse(call: Call<EtatRoute>, response: Response<EtatRoute>) {
-                    retourRoute = response.body()
-                    tv.text = "J'ai reçu quelque chose"
-                }
-
-                override fun onFailure(call: Call<EtatRoute>, t: Throwable) {
-                    TODO("Not yet implemented")
-                }
-
-            })
 
     }
 }
