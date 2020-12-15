@@ -4,15 +4,19 @@ import com.example.sig.dijkstra.exception.PathNotFoundException
 import com.example.sig.dijkstra.model.Edge
 import com.example.sig.dijkstra.model.Graph
 import com.example.sig.dijkstra.model.Vertex
+import com.example.sig.models.PARCPOINT
 import java.util.*
+import kotlin.collections.ArrayList
 
 class DijkstraAlgorithm(graph: Graph) {
+
     private val edges: List<Edge>
     private var settledNodes: MutableSet<Vertex<*>?>? = null
     private var unSettledNodes: MutableSet<Vertex<*>?>? = null
     private var predecessors: MutableMap<Vertex<*>?, Vertex<*>?>? = null
     private var distance: MutableMap<Vertex<*>?, Int?>? = null
     private var source: Vertex<*>? = null
+    var itineraire: ArrayList<PARCPOINT?>?  = ArrayList()
 
     @Throws(PathNotFoundException::class)
     fun execute(source: Vertex<*>?): DijkstraAlgorithm {
@@ -87,16 +91,20 @@ class DijkstraAlgorithm(graph: Graph) {
             val path = LinkedList<Vertex<*>?>()
             if (target.equals(source)) {
                 path.add(target)
+                //itineraire?.add(target.payload as PARCPOINT?)
                 return path
             }
             var step = target
             if (predecessors!![step] == null) throw PathNotFoundException()
             path.add(step)
+            //itineraire?.add(target.payload as PARCPOINT?)
             while (predecessors!![step] != null) {
                 step = predecessors!![step]
                 path.add(step)
+                //itineraire?.add(target.payload as PARCPOINT?)
             }
             path.reverse()
+            //itineraire?.reverse()
             return path
         }
         throw PathNotFoundException()

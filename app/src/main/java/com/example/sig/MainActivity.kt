@@ -1,11 +1,14 @@
 package com.example.sig
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
+import androidx.lifecycle.Observer
+import com.example.sig.R.drawable.diff_marker
 import com.example.sig.dijkstra.DijkstraAlgorithm
 import com.example.sig.dijkstra.model.Edge
 import com.example.sig.dijkstra.model.Graph
@@ -21,6 +24,8 @@ import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import retrofit2.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     private var map: MapView? = null
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -46,21 +52,10 @@ class MainActivity : AppCompatActivity() {
                 parc.PARC_POINT[0].POI_X.toDouble()
             )
 
-            var marquer: Marker = Marker(map)
-            //marquer.position = startPoint
-            for (point in parc.PARC_POINT) {
-                marquer = Marker(map)
-                marquer.position = GeoPoint(point.POI_Y.toDouble(), point.POI_X.toDouble())
-                marquer.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                marquer.title = point.POI_NOM
-                map!!.overlays.add(marquer)
-            }
-            map!!.controller.setCenter(startPoint)
-
             val vertexFrom: Vertex<PARCPOINT> = Vertex(parc.PARC_POINT[0])
             val vertexTo: Vertex<PARCPOINT> = Vertex(parc.PARC_POINT[parc.PARC_POINT.size - 1])
 
-            var edges: ArrayList<Edge> = ArrayList()
+            val edges: ArrayList<Edge> = ArrayList()
             var vertexDepRoute: Vertex<PARCPOINT?>? = null
             var vertexFinRoute: Vertex<PARCPOINT?>? = null
 
@@ -73,7 +68,30 @@ class MainActivity : AppCompatActivity() {
 
             }
 
-            val pathLength = DijkstraAlgorithm(Graph(edges)).execute(vertexFrom).getShortestPathLength(vertexFrom, vertexTo)
+            val dijkstraAlgorithm: DijkstraAlgorithm = DijkstraAlgorithm(Graph(edges))
+
+            val pathLength = dijkstraAlgorithm.execute(vertexFrom).getShortestPathLength(vertexFrom, vertexTo)
+
+            val itineraire: LinkedList<Vertex<PARCPOINT>?> = dijkstraAlgorithm.execute(vertexFrom).getPath(vertexTo) as LinkedList<Vertex<PARCPOINT>?>
+
+            var marquer: Marker? = null
+            //marquer.position = startPoint
+            for (point in parc.PARC_POINT) {
+                marquer = Marker(map)
+                marquer.position = GeoPoint(point.POI_Y.toDouble(), point.POI_X.toDouble())
+                marquer.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                marquer.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                marquer.title = point.POI_NOM
+                for (itiPoint in itineraire){
+                    if (point.POI_ID.toInt() == itiPoint?.payload?.POI_ID?.toInt()){
+                        marquer.icon = this.getDrawable(diff_marker)
+                        Log.d("DEBUG","bite")
+                    }
+                }
+                map!!.overlays.add(marquer)
+            }
+            map!!.controller.setCenter(startPoint)
+
             Log.d("DEBUG",pathLength.toString())
 
         })
