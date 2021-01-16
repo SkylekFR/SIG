@@ -52,8 +52,20 @@ class MainActivity : AppCompatActivity() {
                 parc.PARC_POINT[0].POI_X.toDouble()
             )
 
-            val vertexFrom: Vertex<PARCPOINT> = Vertex(parc.PARC_POINT[0])
-            val vertexTo: Vertex<PARCPOINT> = Vertex(parc.PARC_POINT[parc.PARC_POINT.size - 1])
+            var pointA: PARCPOINT? = null;
+            var pointD: PARCPOINT? = null;
+
+            for (point in parc.PARC_POINT) {
+                if (point.POI_NOM == "A"){
+                    pointA = point
+                }
+                if (point.POI_NOM == "D"){
+                    pointD = point
+                }
+            }
+
+            val vertexFrom: Vertex<PARCPOINT> = Vertex(pointA!!)
+            val vertexTo: Vertex<PARCPOINT> = Vertex(pointD!!)
 
             val edges: ArrayList<Edge> = ArrayList()
             var vertexDepRoute: Vertex<PARCPOINT?>? = null
@@ -78,16 +90,15 @@ class MainActivity : AppCompatActivity() {
             //marquer.position = startPoint
             for (point in parc.PARC_POINT) {
                 marquer = Marker(map)
-                marquer.position = GeoPoint(point.POI_Y.toDouble(), point.POI_X.toDouble())
-                marquer.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                marquer.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                marquer.title = point.POI_NOM
                 for (itiPoint in itineraire){
                     if (point.POI_ID.toInt() == itiPoint?.payload?.POI_ID?.toInt()){
                         marquer.icon = this.getDrawable(diff_marker)
-                        Log.d("DEBUG","bite")
                     }
                 }
+                marquer.position = GeoPoint(point.POI_Y.toDouble(), point.POI_X.toDouble())
+                marquer.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                //marquer.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                marquer.title = point.POI_NOM
                 map!!.overlays.add(marquer)
             }
             map!!.controller.setCenter(startPoint)
