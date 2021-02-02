@@ -52,19 +52,19 @@ class MainActivity : AppCompatActivity() {
                 parc.PARC_POINT[0].POI_X.toDouble()
             )
 
-            var pointA: PARCPOINT? = null;
+            var pointE: PARCPOINT? = null;
             var pointD: PARCPOINT? = null;
 
             for (point in parc.PARC_POINT) {
-                if (point.POI_NOM == "A"){
-                    pointA = point
+                if (point.POI_NOM == "E"){
+                    pointE = point
                 }
                 if (point.POI_NOM == "D"){
                     pointD = point
                 }
             }
 
-            val vertexFrom: Vertex<PARCPOINT> = Vertex(pointA!!)
+            val vertexFrom: Vertex<PARCPOINT> = Vertex(pointE!!)
             val vertexTo: Vertex<PARCPOINT> = Vertex(pointD!!)
 
             val edges: ArrayList<Edge> = ArrayList()
